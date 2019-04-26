@@ -206,6 +206,7 @@ class DateTimeNormalizerTest extends TestCase
     public function testDenormalizeUsingTimezonePassedInConstructor()
     {
         $this->doTestDenormalizeUsingTimezonePassedInConstructor();
+
         // Test correction of Timezone when timezone information is added in both the date string and the context of the normalizer.
         $normalizer = new DateTimeNormalizer(
             [
@@ -213,12 +214,11 @@ class DateTimeNormalizerTest extends TestCase
                 DateTimeNormalizer::TIMEZONE_KEY => 'Australia/Brisbane',
             ]
         );
-
-        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-27T16:39:26+01:00', \DateTimeInterface::class)->format(\DATE_RFC3339));
-        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-27T15:39:26+00:00', \DateTime::class)->format(\DATE_RFC3339));
-        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-28 01:39:26', \DateTime::class)->format(\DATE_RFC3339));
-        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-28T01:39:26+10:00', \DateTimeInterface::class)->format(\DATE_RFC3339));
-        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('@1453909166', \DateTimeImmutable::class)->format(\DATE_RFC3339));
+        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-27T16:39:26+01:00', \DateTimeInterface::class)->format(\DATE_RFC3339)); //Non UTC
+        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-27T15:39:26+00:00', \DateTime::class)->format(\DATE_RFC3339)); //UTC
+        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-28 01:39:26', \DateTime::class)->format(\DATE_RFC3339)); //No timezone in string
+        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('2016-01-28T01:39:26+10:00', \DateTimeInterface::class)->format(\DATE_RFC3339)); //same tz as constructor
+        $this->assertEquals('2016-01-28T01:39:26+10:00', $normalizer->denormalize('@1453909166', \DateTimeImmutable::class)->format(\DATE_RFC3339)); //timestamp assumes UTC
     }
 
     public function testLegacyDenormalizeUsingTimezonePassedInConstructor()
