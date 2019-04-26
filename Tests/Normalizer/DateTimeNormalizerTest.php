@@ -206,7 +206,10 @@ class DateTimeNormalizerTest extends TestCase
     public function testDenormalizeUsingTimezonePassedInConstructor()
     {
         $this->doTestDenormalizeUsingTimezonePassedInConstructor();
-
+    }
+    
+    public function testDenormalizeUsingTimezonePassedInDefaultContext()
+    {
         // Test correction of Timezone when timezone information is added in both the date string and the context of the normalizer.
         $normalizer = new DateTimeNormalizer(
             [
