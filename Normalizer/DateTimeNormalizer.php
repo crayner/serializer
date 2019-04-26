@@ -126,7 +126,8 @@ class DateTimeNormalizer implements NormalizerInterface, DenormalizerInterface, 
              *
              * If you specify the timezone when denormalizing, you'd expect all datetimes to come out in that timezone, regardless of (user) input.
              */
-            $datetime->setTimezone($timezone);
+            if ($timezone instanceof \DateTimeZone)
+                $datetime->setTimezone($timezone);
             return \DateTime::class === $class ? $datetime : new \DateTimeImmutable($datetime->format(\DATE_RFC3339), $timezone);
         } catch (\Exception $e) {
             throw new NotNormalizableValueException($e->getMessage(), $e->getCode(), $e);
